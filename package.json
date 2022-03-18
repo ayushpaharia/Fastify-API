@@ -1,0 +1,49 @@
+{
+  "name": "ts-fastify-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register src/server.ts",
+    "build": "tsc -w",
+    "pm2": "pm2 --name fastify-app start dist/server.js",
+    "pm2:watch": "NODE_ENV=production pm2 start dist/server.js --watch -i max --name fastify-app",
+    "pm2:dev": "concurrently \"npm run build\" \"npm run pm2:watch\"",
+    "pm2:kill": "pm2 kill",
+    "serve": "npm run build && node dist/server.js",
+    "dev:1": "tsnd -r tsconfig-paths/register --respawn --exit-child --transpile-only src/server.ts",
+    "dev:2": "nodemon -r tsconfig-paths/register --exec ts-node src/server.ts"
+  },
+  "keywords": [
+    "fastify",
+    "typescript",
+    "prisma",
+    "pm2",
+    "docker",
+    "docker-compose"
+  ],
+  "author": "rezza",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.11.0",
+    "config": "^3.3.7",
+    "dotenv": "^16.0.0",
+    "fastify": "^3.27.4",
+    "fastify-jwt": "^4.1.3",
+    "fastify-swagger": "^5.0.0",
+    "fastify-zod": "^1.0.0-rc10",
+    "zod": "^3.14.1",
+    "zod-to-json-schema": "^3.11.3"
+  },
+  "devDependencies": {
+    "@types/config": "^0.0.41",
+    "@types/node": "^17.0.21",
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15",
+    "pino-pretty": "^7.5.4",
+    "pm2": "^5.2.0",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.14.0",
+    "typescript": "^4.6.2"
+  }
+}
