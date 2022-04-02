@@ -6,9 +6,9 @@
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/server.ts",
     "build": "tsc -w",
-    "pm2": "pm2 --name fastify-app start dist/server.js",
-    "pm2:watch": "NODE_ENV=production pm2 start dist/server.js --watch -i max --name fastify-app",
-    "pm2:dev": "concurrently \"npm run build\" \"npm run pm2:watch\"",
+    "pm2:startone": "pm2 --name fastify-app start dist/server.js",
+    "pm2:start": "NODE_ENV=production pm2 start dist/server.js --watch -i max --name fastify-app",
+    "pm2:dev": "concurrently \"npm run build\" \"npm run pm2:start\"",
     "pm2:kill": "pm2 kill",
     "serve": "npm run build && node dist/server.js",
     "dev:1": "tsnd -r tsconfig-paths/register --respawn --exit-child --transpile-only src/server.ts",
