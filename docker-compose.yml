@@ -1,0 +1,55 @@
+version : '3'
+
+services:
+    lb:
+        image: haproxy
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./haproxy:/usr/local/etc/haproxy
+    ws1:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            args:
+                NODE_ENV: development
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        environment:
+            - APPID=1111
+    ws2:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            args:
+                NODE_ENV: development
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        environment:
+            - APPID=2222
+    ws3:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            args:
+                NODE_ENV: development
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        environment:
+            - APPID=3333
+    ws4:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            args:
+                NODE_ENV: development
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        environment:
+            - APPID=4444
+    rds:
+        image: redis
