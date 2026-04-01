@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fastify-API Banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0b1326; overflow: hidden; }
+  .banner {
+    width: 1280px;
+    height: 640px;
+    background: #0b1326;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: 'Manrope', sans-serif;
+  }
+  /* Grid background */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(176,198,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(176,198,255,0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  /* Gradient orbs */
+  .orb-1 {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,84,194,0.15) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    border-radius: 50%;
+  }
+  .orb-2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,228,117,0.08) 0%, transparent 70%);
+    bottom: -150px; left: 100px;
+    border-radius: 50%;
+  }
+  /* Content */
+  .content {
+    position: relative; z-index: 10;
+    padding: 0 80px;
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    width: 100%;
+  }
+  .left { flex: 1; }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: rgba(0,84,194,0.4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #b0c6ff;
+  }
+  .logo-text h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #b0c6ff;
+    letter-spacing: -0.02em;
+  }
+  .logo-text p {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #454652;
+    font-weight: 700;
+  }
+  .headline {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #dae2fd;
+    margin-bottom: 20px;
+  }
+  .headline .accent { color: #b0c6ff; }
+  .headline .green { color: #00e475; }
+  .tagline {
+    font-size: 16px;
+    color: #8f909e;
+    line-height: 1.6;
+    max-width: 400px;
+  }
+  .badges {
+    display: flex;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .badge {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .badge-blue {
+    background: rgba(176,198,255,0.1);
+    color: #b0c6ff;
+    border: 1px solid rgba(176,198,255,0.15);
+  }
+  .badge-green {
+    background: rgba(0,228,117,0.08);
+    color: #00e475;
+    border: 1px solid rgba(0,228,117,0.12);
+  }
+  /* Right: Mini dashboard preview */
+  .right {
+    width: 420px;
+    shrink: 0;
+  }
+  .card {
+    background: rgba(19,27,46,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(69,70,82,0.2);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.3), 0 0 80px rgba(176,198,255,0.04);
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #8f909e;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    background: #00e475;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0,228,117,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  .metric-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .metric {
+    flex: 1;
+    background: rgba(19,27,46,0.5);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .metric-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #8f909e;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .metric-value {
+    font-family: 'Manrope', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #dae2fd;
+  }
+  .metric-change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #00e475;
+    margin-top: 4px;
+  }
+  .endpoint-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(69,70,82,0.15);
+  }
+  .method-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .method-get { background: rgba(0,105,50,0.3); color: #62ff96; }
+  .method-post { background: rgba(0,84,194,0.3); color: #b0c6ff; }
+  .endpoint-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #c5c5d4;
+    flex: 1;
+  }
+  .endpoint-latency {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #adcbda;
+  }
+  /* Scan lines */
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0.012;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(176,198,255,0.5) 2px, rgba(176,198,255,0.5) 3px);
+  }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="grid-bg"></div>
+  <div class="orb-1"></div>
+  <div class="orb-2"></div>
+  <div class="scanlines"></div>
+
+  <div class="content">
+    <div class="left">
+      <div class="logo-row">
+        <div class="logo-icon">⚡</div>
+        <div class="logo-text">
+          <h1>Fastify-API</h1>
+          <p>Technical Curator</p>
+        </div>
+      </div>
+      <div class="headline">
+        Your APIs,<br/>
+        <span class="accent">curated</span> to<br/>
+        <span class="green">perfection.</span>
+      </div>
+      <p class="tagline">
+        Monitor, document, and orchestrate your entire API infrastructure from a single editorial dashboard.
+      </p>
+      <div class="badges">
+        <span class="badge badge-blue">Fastify 5</span>
+        <span class="badge badge-blue">Drizzle ORM</span>
+        <span class="badge badge-green">Neon Postgres</span>
+        <span class="badge badge-blue">Next.js 16</span>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Live Dashboard</span>
+          <div class="status-dot"></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-label">Requests</div>
+            <div class="metric-value">1.2K</div>
+            <div class="metric-change">+12% ↑</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Latency</div>
+            <div class="metric-value">42ms</div>
+            <div class="metric-change">-4ms ↓</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Errors</div>
+            <div class="metric-value">0.0%</div>
+            <div class="metric-change">healthy ✓</div>
+          </div>
+        </div>
+        <div class="endpoint-row">
+          <span class="method-badge method-get">GET</span>
+          <span class="endpoint-path">/v1/auth/session</span>
+          <span class="endpoint-latency">12ms</span>
+        </div>
+        <div class="endpoint-row">
+          <span class="method-badge method-post">POST</span>
+          <span class="endpoint-path">/v2/analytics/events</span>
+          <span class="endpoint-latency">156ms</span>
+        </div>
+        <div class="endpoint-row">
+          <span class="method-badge method-get">GET</span>
+          <span class="endpoint-path">/v1/health</span>
+          <span class="endpoint-latency">4ms</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
