@@ -3,7 +3,7 @@
     "frontend": {
       "entrypoint": "frontend",
       "runtime": "nextjs",
-      "routePrefix": "/"
+      "subdomain": "app"
     },
     "backend": {
       "entrypoint": "backend",
