@@ -8,6 +8,7 @@ import {
   timestamp,
   jsonb,
   varchar,
+  boolean,
   pgPolicy,
 } from "drizzle-orm/pg-core";
 import {
@@ -17,7 +18,6 @@ import {
   crudPolicy,
 } from "drizzle-orm/neon";
 
-// Users table — authenticated users can read all, only admins can modify
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   clerkId: text("clerk_id").unique(),
@@ -30,28 +30,11 @@ export const users = pgTable("users", {
   lastActivity: text("last_activity").default("Just now"),
   createdAt: timestamp("created_at").defaultNow(),
 }, (table) => [
-  // Authenticated users can read all users
-  pgPolicy("users_select_authenticated", {
-    for: "select",
-    to: authenticatedRole,
-    using: sql`true`,
-  }),
-  // Authenticated users can only update their own record
-  pgPolicy("users_update_own", {
-    for: "update",
-    to: authenticatedRole,
-    using: sql`clerk_id = (select auth.user_id())`,
-    withCheck: sql`clerk_id = (select auth.user_id())`,
-  }),
-  // Anonymous users can read (for public dashboard)
-  pgPolicy("users_select_anon", {
-    for: "select",
-    to: anonymousRole,
-    using: sql`true`,
-  }),
+  pgPolicy("users_select_authenticated", { for: "select", to: authenticatedRole, using: sql`true` }),
+  pgPolicy("users_update_own", { for: "update", to: authenticatedRole, using: sql`clerk_id = (select auth.user_id())`, withCheck: sql`clerk_id = (select auth.user_id())` }),
+  pgPolicy("users_select_anon", { for: "select", to: anonymousRole, using: sql`true` }),
 ]);
 
-// Endpoints table — read for all, write for authenticated
 export const endpoints = pgTable("endpoints", {
   id: serial("id").primaryKey(),
   method: varchar("method", { length: 10 }).notNull(),
@@ -68,7 +51,6 @@ export const endpoints = pgTable("endpoints", {
   crudPolicy({ role: anonymousRole, read: true, modify: false }),
 ]);
 
-// Logs table — read for all, insert for authenticated only
 export const logs = pgTable("logs", {
   id: serial("id").primaryKey(),
   timestamp: timestamp("timestamp").defaultNow(),
@@ -84,7 +66,6 @@ export const logs = pgTable("logs", {
   crudPolicy({ role: anonymousRole, read: true, modify: false }),
 ]);
 
-// Metrics table — read-only for everyone
 export const metrics = pgTable("metrics", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -96,4 +77,32 @@ export const metrics = pgTable("metrics", {
 }, () => [
   crudPolicy({ role: authenticatedRole, read: true, modify: true }),
   crudPolicy({ role: anonymousRole, read: true, modify: false }),
+]);
+
+// Webhooks table
+export const webhooks = pgTable("webhooks", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  url: text("url").notNull(),
+  secret: text("secret"),
+  events: jsonb("events").$type<string[]>().default([]),
+  active: boolean("active").default(true),
+  lastTriggered: timestamp("last_triggered"),
+  lastStatus: integer("last_status"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, () => [
+  crudPolicy({ role: authenticatedRole, read: true, modify: true }),
+]);
+
+// Ingestion logs — external systems push logs here
+export const ingestionLogs = pgTable("ingestion_logs", {
+  id: serial("id").primaryKey(),
+  source: text("source").notNull(),
+  level: varchar("level", { length: 10 }).notNull().default("info"),
+  message: text("message").notNull(),
+  metadata: jsonb("metadata"),
+  timestamp: timestamp("timestamp").defaultNow(),
+  processedAt: timestamp("processed_at"),
+}, () => [
+  crudPolicy({ role: authenticatedRole, read: true, modify: true }),
 ]);

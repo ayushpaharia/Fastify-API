@@ -57,11 +57,11 @@ export default function Sidebar() {
           <span className="material-symbols-outlined text-sm">add</span>
           New Endpoint
         </button>
-        <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 transition-colors text-sm font-medium">
+        <Link href="/settings" className={`flex items-center gap-3 px-3 py-2 transition-colors text-sm font-medium ${pathname === "/settings" ? "text-primary" : "text-slate-400 hover:text-slate-100"}`}>
           <span className="material-symbols-outlined text-lg">settings</span>
           Settings
         </Link>
-        <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 transition-colors text-sm font-medium">
+        <Link href="/support" className={`flex items-center gap-3 px-3 py-2 transition-colors text-sm font-medium ${pathname === "/support" ? "text-primary" : "text-slate-400 hover:text-slate-100"}`}>
           <span className="material-symbols-outlined text-lg">help</span>
           Support
         </Link>

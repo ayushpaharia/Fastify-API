@@ -11,6 +11,8 @@ import { userRoutes } from "./routes/users.js";
 import { logRoutes } from "./routes/logs.js";
 import { authRoutes } from "./routes/auth.js";
 import { eventRoutes } from "./routes/events.js";
+import { webhookRoutes } from "./routes/webhooks.js";
+import { ingestionRoutes } from "./routes/ingestion.js";
 
 const app = Fastify({ logger: true });
 
@@ -29,6 +31,8 @@ async function start() {
   await app.register(logRoutes);
   await app.register(authRoutes);
   await app.register(eventRoutes);
+  await app.register(webhookRoutes);
+  await app.register(ingestionRoutes);
 
   const port = parseInt(process.env.PORT || "4000");
   await app.listen({ port, host: "0.0.0.0" });
