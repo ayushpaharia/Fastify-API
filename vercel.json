@@ -2,12 +2,14 @@
   "experimentalServices": {
     "frontend": {
       "entrypoint": "frontend",
-      "runtime": "nextjs"
+      "runtime": "nextjs",
+      "routePrefix": "/"
     },
     "backend": {
       "entrypoint": "backend",
       "runtime": "node",
-      "buildCommand": "npm run build"
+      "buildCommand": "npm run build",
+      "subdomain": "api"
     }
   }
 }
