@@ -1,0 +1,14 @@
+{
+  "experimentalServices": {
+    "frontend": {
+      "entrypoint": "frontend",
+      "runtime": "nextjs"
+    },
+    "backend": {
+      "entrypoint": "backend",
+      "runtime": "node",
+      "buildCommand": "npm run build",
+      "startCommand": "npm start"
+    }
+  }
+}
