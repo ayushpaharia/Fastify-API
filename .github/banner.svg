@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050d1f"/>
+      <stop offset="100%" stop-color="#0b1326"/>
+    </linearGradient>
+    <linearGradient id="btn" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0054c2"/>
+      <stop offset="100%" stop-color="#0060dd"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="20%" cy="80%" r="40%">
+      <stop offset="0%" stop-color="#0054c2" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0054c2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="20%" r="30%">
+      <stop offset="0%" stop-color="#00e475" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#00e475" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#glow1)"/>
+  <rect width="1280" height="640" fill="url(#glow2)"/>
+  
+  <!-- Grid -->
+  <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+    <path d="M 64 0 L 0 0 0 64" fill="none" stroke="rgba(176,198,255,0.04)" stroke-width="1"/>
+  </pattern>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  
+  <!-- Left content -->
+  <g transform="translate(80, 80)">
+    <!-- Logo -->
+    <rect x="0" y="0" width="48" height="48" rx="12" fill="rgba(0,84,194,0.4)"/>
+    <text x="24" y="32" text-anchor="middle" fill="#b0c6ff" font-size="22">⚡</text>
+    <text x="62" y="22" fill="#b0c6ff" font-family="sans-serif" font-weight="800" font-size="22">Fastify-API</text>
+    <text x="62" y="40" fill="#454652" font-family="sans-serif" font-weight="700" font-size="9" letter-spacing="3">TECHNICAL CURATOR</text>
+    
+    <!-- Headline -->
+    <text x="0" y="140" fill="#dae2fd" font-family="sans-serif" font-weight="800" font-size="52" letter-spacing="-1">Your APIs,</text>
+    <text x="0" y="200" fill="#b0c6ff" font-family="sans-serif" font-weight="800" font-size="52" letter-spacing="-1">curated</text>
+    <text x="248" y="200" fill="#dae2fd" font-family="sans-serif" font-weight="800" font-size="52" letter-spacing="-1"> to</text>
+    <text x="0" y="260" fill="#00e475" font-family="sans-serif" font-weight="800" font-size="52" letter-spacing="-1">perfection.</text>
+    
+    <!-- Tagline -->
+    <text x="0" y="310" fill="#8f909e" font-family="sans-serif" font-size="16">Monitor, document, and orchestrate your</text>
+    <text x="0" y="332" fill="#8f909e" font-family="sans-serif" font-size="16">entire API infrastructure from a single dashboard.</text>
+    
+    <!-- Badges -->
+    <rect x="0" y="370" width="80" height="28" rx="6" fill="rgba(176,198,255,0.1)" stroke="rgba(176,198,255,0.15)" stroke-width="1"/>
+    <text x="40" y="389" text-anchor="middle" fill="#b0c6ff" font-family="monospace" font-size="11">Fastify 5</text>
+    
+    <rect x="90" y="370" width="90" height="28" rx="6" fill="rgba(176,198,255,0.1)" stroke="rgba(176,198,255,0.15)" stroke-width="1"/>
+    <text x="135" y="389" text-anchor="middle" fill="#b0c6ff" font-family="monospace" font-size="11">Drizzle ORM</text>
+    
+    <rect x="190" y="370" width="100" height="28" rx="6" fill="rgba(0,228,117,0.08)" stroke="rgba(0,228,117,0.12)" stroke-width="1"/>
+    <text x="240" y="389" text-anchor="middle" fill="#00e475" font-family="monospace" font-size="11">Neon Postgres</text>
+    
+    <rect x="300" y="370" width="82" height="28" rx="6" fill="rgba(176,198,255,0.1)" stroke="rgba(176,198,255,0.15)" stroke-width="1"/>
+    <text x="341" y="389" text-anchor="middle" fill="#b0c6ff" font-family="monospace" font-size="11">Next.js 16</text>
+  </g>
+  
+  <!-- Right: Mini dashboard card -->
+  <g transform="translate(700, 100)">
+    <rect x="0" y="0" width="480" height="420" rx="16" fill="rgba(19,27,46,0.7)" stroke="rgba(69,70,82,0.2)" stroke-width="1"/>
+    
+    <!-- Card header -->
+    <text x="28" y="40" fill="#8f909e" font-family="sans-serif" font-weight="700" font-size="13" letter-spacing="2">LIVE DASHBOARD</text>
+    <circle cx="448" cy="34" r="5" fill="#00e475"/>
+    
+    <!-- Metric boxes -->
+    <rect x="20" y="60" width="140" height="80" rx="10" fill="rgba(19,27,46,0.5)"/>
+    <text x="32" y="85" fill="#8f909e" font-family="sans-serif" font-weight="600" font-size="9" letter-spacing="1.5">REQUESTS</text>
+    <text x="32" y="118" fill="#dae2fd" font-family="sans-serif" font-weight="800" font-size="26">1.2K</text>
+    
+    <rect x="170" y="60" width="140" height="80" rx="10" fill="rgba(19,27,46,0.5)"/>
+    <text x="182" y="85" fill="#8f909e" font-family="sans-serif" font-weight="600" font-size="9" letter-spacing="1.5">LATENCY</text>
+    <text x="182" y="118" fill="#dae2fd" font-family="sans-serif" font-weight="800" font-size="26">42ms</text>
+    
+    <rect x="320" y="60" width="140" height="80" rx="10" fill="rgba(19,27,46,0.5)"/>
+    <text x="332" y="85" fill="#8f909e" font-family="sans-serif" font-weight="600" font-size="9" letter-spacing="1.5">ERRORS</text>
+    <text x="332" y="118" fill="#dae2fd" font-family="sans-serif" font-weight="800" font-size="26">0.0%</text>
+    
+    <!-- Endpoint rows -->
+    <line x1="20" y1="165" x2="460" y2="165" stroke="rgba(69,70,82,0.15)" stroke-width="1"/>
+    <rect x="20" y="180" width="40" height="20" rx="4" fill="rgba(0,105,50,0.3)"/>
+    <text x="40" y="194" text-anchor="middle" fill="#62ff96" font-family="monospace" font-weight="700" font-size="9">GET</text>
+    <text x="72" y="194" fill="#c5c5d4" font-family="monospace" font-size="12">/v1/auth/session</text>
+    <text x="430" y="194" fill="#adcbda" font-family="monospace" font-size="11" text-anchor="end">12ms</text>
+    
+    <line x1="20" y1="210" x2="460" y2="210" stroke="rgba(69,70,82,0.15)" stroke-width="1"/>
+    <rect x="20" y="225" width="44" height="20" rx="4" fill="rgba(0,84,194,0.3)"/>
+    <text x="42" y="239" text-anchor="middle" fill="#b0c6ff" font-family="monospace" font-weight="700" font-size="9">POST</text>
+    <text x="76" y="239" fill="#c5c5d4" font-family="monospace" font-size="12">/v2/analytics/events</text>
+    <text x="430" y="239" fill="#adcbda" font-family="monospace" font-size="11" text-anchor="end">156ms</text>
+    
+    <line x1="20" y1="255" x2="460" y2="255" stroke="rgba(69,70,82,0.15)" stroke-width="1"/>
+    <rect x="20" y="270" width="40" height="20" rx="4" fill="rgba(0,105,50,0.3)"/>
+    <text x="40" y="284" text-anchor="middle" fill="#62ff96" font-family="monospace" font-weight="700" font-size="9">GET</text>
+    <text x="72" y="284" fill="#c5c5d4" font-family="monospace" font-size="12">/v1/health</text>
+    <text x="430" y="284" fill="#adcbda" font-family="monospace" font-size="11" text-anchor="end">4ms</text>
+    
+    <!-- Status bar -->
+    <line x1="20" y1="310" x2="460" y2="310" stroke="rgba(69,70,82,0.15)" stroke-width="1"/>
+    <rect x="20" y="330" width="440" height="6" rx="3" fill="rgba(45,52,73,0.5)"/>
+    <rect x="20" y="330" width="396" height="6" rx="3" fill="#00e475"/>
+    <rect x="416" y="330" width="26" height="6" rx="3" fill="#b0c6ff"/>
+    <rect x="442" y="330" width="18" height="6" rx="3" fill="#ffb4ab"/>
+    
+    <text x="20" y="365" fill="#8f909e" font-family="sans-serif" font-size="10">2xx 100%</text>
+    <text x="120" y="365" fill="#8f909e" font-family="sans-serif" font-size="10">4xx 0%</text>
+    <text x="200" y="365" fill="#8f909e" font-family="sans-serif" font-size="10">5xx 0%</text>
+    
+    <circle cx="22" cy="400" r="4" fill="#00e475"/>
+    <text x="34" y="404" fill="#00e475" font-family="monospace" font-weight="700" font-size="10" letter-spacing="2">ALL SYSTEMS OPERATIONAL</text>
+  </g>
+</svg>

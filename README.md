@@ -2,7 +2,7 @@
 
 A full-stack API management dashboard built with Fastify 5, Next.js 16, Neon Postgres, and Clerk Auth.
 
-![Technical Curator](banner.html)
+![Technical Curator](.github/banner.svg)
 
 ## Stack
 
