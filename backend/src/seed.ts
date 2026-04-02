@@ -156,6 +156,15 @@ async function seed() {
     .insert(users)
     .values([
       {
+        name: "Ayush Paharia",
+        email: "ayush@fastify.io",
+        role: "admin",
+        authLevel: "Full System Write",
+        status: "active",
+        avatarUrl: null,
+        lastActivity: "Just now",
+      },
+      {
         name: "Alex Sokolov",
         email: "alex.s@fastify.io",
         role: "admin",
@@ -407,7 +416,7 @@ async function seed() {
 
   // ── Summary ──────────────────────────────────────────────────────────
   console.log("\n🎉 Seed complete!");
-  console.log(`   • ${userRows.length} users (1 admin, 2 developers, 1 viewer)`);
+  console.log(`   • ${userRows.length} users (2 admins, 2 developers, 1 viewer)`);
   console.log(`   • ${sessionBatch.length} sessions (live lastActivity computed from these)`);
   console.log(`   • ${endpointRows.length} endpoints`);
   console.log(`   • ${logBatch.length} request logs (48h spread + recent burst)`);
