@@ -12,7 +12,7 @@ export default function TopNav() {
   const [notifOpen, setNotifOpen] = useState(false);
 
   const tabs = [
-    { label: "Health", href: "/dashboard#health" },
+    { label: "Health", href: "/health" },
     { label: "Metrics", href: "/dashboard" },
     { label: "Analytics", href: "/logs" },
   ];
@@ -32,7 +32,9 @@ export default function TopNav() {
           <nav className="flex gap-6">
             {tabs.map((tab) => {
               const isActive =
-                tab.label === "Metrics"
+                tab.label === "Health"
+                  ? pathname === "/health"
+                  : tab.label === "Metrics"
                   ? pathname === "/dashboard"
                   : tab.label === "Analytics"
                   ? pathname === "/logs"
