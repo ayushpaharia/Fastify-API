@@ -164,45 +164,6 @@ async function seed() {
         avatarUrl: null,
         lastActivity: "Just now",
       },
-      {
-        name: "Alex Sokolov",
-        email: "alex.s@fastify.io",
-        role: "admin",
-        authLevel: "Full System Write",
-        status: "active",
-        avatarUrl:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuARoPLuzkjaSPEIZQQTaJUM6IBd14OW5qPgcLj1NBJdoBbPgPyzCvOvYf6fVYQWUx5XXEsH5KklR4z3JAPc6vQplSiV6YNocNfYQ0t4zDHA-iOlNG2uVup4-8zgXR9pIyblt3JtoJoX8a7czqhoKKTGMb2QKIN4B-_jAzUXKGFOqft4Re40uSmmaScAR8WcOMTwUFFx4KQGJIbLpj4CjkkbCJaW3dokQXZZTtVIbFbUV_mgdKZUEY1JHqE0sWczz6Pwl0MhHere7Q",
-        lastActivity: "Just now",
-      },
-      {
-        name: "Maria Chen",
-        email: "m.chen@devops.co",
-        role: "developer",
-        authLevel: "Read/Write API",
-        status: "active",
-        avatarUrl:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuAm7bHfAETxPfbYxeXwZ9xv35LQ0yEsbQ0aqYG3aoziKTGnOPAqngDH8teJuTFhMpSMfDEnXteZh3oWp0N-2txL-mD17VdSn7GM3gU5WDJBpzGewdqJ8EkzKFITeROGZ6qc8K2V743tJuKJ2s59I2UZqK4cDaiPsxWdGmGyc58w4othuZpcTRCmctgdQuS6E3PVGvd0-uJCMqn-R4c6CFyAUE65f-M_ttKFKIyDHagX6g7Cvq0R7ZQ397w17ELM5rCL5hyxyKPCXQ",
-        lastActivity: "1 hour ago",
-      },
-      {
-        name: "Jordan Klein",
-        email: "j.klein@archive.io",
-        role: "viewer",
-        authLevel: "Read-only Analytics",
-        status: "inactive",
-        avatarUrl: null,
-        lastActivity: "12 days ago",
-      },
-      {
-        name: "Takahiro Hiroshi",
-        email: "hiroshi@global-tek.jp",
-        role: "developer",
-        authLevel: "Read/Write API",
-        status: "active",
-        avatarUrl:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuBG9ndJaQs-i6JASyGFV8_-qXCmW7-GYnBLr3vabae9NEpefOccMvB5q_Cpe8zfKA5YakLMZoUMmQxhkAUZlmbQtfm5ijslh0z_tabeffOu73h32Z6o8-jkFt7WTE8g5sH_xT1xkZqn71tJDPSVTJsQ-39e6qgXbmVpW6wxt4qcOq-GhAJ_SSXW4z1BXHJrbvxwkOvniTCO7MawUcz89Bc9SIjkPcezWC9grFKjRxkdC0tZaF6UA5sA6ZwlwY3iynON2-we_R4bYg",
-        lastActivity: "Just now",
-      },
     ])
     .returning();
   console.log(`  ✓ Inserted ${userRows.length} users`);
@@ -416,7 +377,7 @@ async function seed() {
 
   // ── Summary ──────────────────────────────────────────────────────────
   console.log("\n🎉 Seed complete!");
-  console.log(`   • ${userRows.length} users (2 admins, 2 developers, 1 viewer)`);
+  console.log(`   • ${userRows.length} user (Ayush Paharia, admin)`);
   console.log(`   • ${sessionBatch.length} sessions (live lastActivity computed from these)`);
   console.log(`   • ${endpointRows.length} endpoints`);
   console.log(`   • ${logBatch.length} request logs (48h spread + recent burst)`);

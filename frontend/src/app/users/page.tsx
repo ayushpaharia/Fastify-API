@@ -137,9 +137,9 @@ export default async function UsersPage() {
                   </li>
                 ))}
               </ul>
-              <button className="w-full py-2.5 rounded-lg border border-outline/20 text-xs font-bold text-slate-300 hover:bg-surface-container-high transition-colors">
-                Modify Permissions
-              </button>
+              <div className="w-full py-2.5 rounded-lg border border-outline/20 text-xs font-bold text-slate-500 text-center cursor-default" title="Role permissions are fixed — edit individual users above">
+                System Role — Not Editable
+              </div>
             </div>
           ))}
         </div>
