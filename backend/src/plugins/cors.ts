@@ -7,7 +7,12 @@ export async function registerCors(app: FastifyInstance) {
     : [];
 
   await app.register(cors, {
-    origin: ["http://localhost:3000", "http://localhost:3001", ...extraOrigins],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://fastify-api-prod.vercel.app",
+      ...extraOrigins,
+    ],
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   });
 }

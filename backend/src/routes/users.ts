@@ -1,7 +1,19 @@
 import type { FastifyInstance } from "fastify";
 import { db } from "../db.js";
-import { users } from "../schema.js";
-import { eq, ilike, sql } from "drizzle-orm";
+import { users, sessions } from "../schema.js";
+import { eq, sql, desc } from "drizzle-orm";
+
+function timeAgo(date: Date | null): string {
+  if (!date) return "Never";
+  const seconds = Math.round((Date.now() - date.getTime()) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  return `${days}d ago`;
+}
 
 export async function userRoutes(app: FastifyInstance) {
   app.get("/api/users", async (req) => {
@@ -20,6 +32,57 @@ export async function userRoutes(app: FastifyInstance) {
 
     const data = await db.select().from(users).where(where).limit(limit).offset(offset);
     const [{ count }] = await db.select({ count: sql<number>`count(*)` }).from(users).where(where);
+
+    // Compute lastActivity from sessions for each user
+    const enriched = await Promise.all(
+      data.map(async (user) => {
+        const [latestSession] = await db
+          .select({ lastActiveAt: sessions.lastActiveAt })
+          .from(sessions)
+          .where(eq(sessions.userId, user.id))
+          .orderBy(desc(sessions.lastActiveAt))
+          .limit(1);
+
+        return {
+          ...user,
+          lastActivity: timeAgo(latestSession?.lastActiveAt ?? null),
+        };
+      })
+    );
+
+    return {
+      data: enriched,
+      pagination: {
+        page,
+        limit,
+        total: Number(count),
+        pages: Math.ceil(Number(count) / limit),
+      },
+    };
+  });
+
+  // Sessions endpoints
+  app.get("/api/sessions", async (req) => {
+    const url = new URL(req.url, `http://${req.hostname}`);
+    const userId = url.searchParams.get("userId");
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "20");
+    const offset = (page - 1) * limit;
+
+    const where = userId ? eq(sessions.userId, parseInt(userId)) : undefined;
+
+    const data = await db
+      .select()
+      .from(sessions)
+      .where(where)
+      .orderBy(desc(sessions.lastActiveAt))
+      .limit(limit)
+      .offset(offset);
+
+    const [{ count }] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(sessions)
+      .where(where);
 
     return {
       data,

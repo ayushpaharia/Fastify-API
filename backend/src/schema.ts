@@ -94,6 +94,22 @@ export const webhooks = pgTable("webhooks", {
   crudPolicy({ role: authenticatedRole, read: true, modify: true }),
 ]);
 
+// Sessions — tracks user login sessions and API activity
+export const sessions = pgTable("sessions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  token: text("token").notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+  revokedAt: timestamp("revoked_at"),
+}, () => [
+  crudPolicy({ role: authenticatedRole, read: true, modify: true }),
+  crudPolicy({ role: anonymousRole, read: true, modify: false }),
+]);
+
 // Ingestion logs — external systems push logs here
 export const ingestionLogs = pgTable("ingestion_logs", {
   id: serial("id").primaryKey(),
