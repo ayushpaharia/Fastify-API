@@ -1,4 +1,6 @@
 import { api, type HealthStatus } from "@/lib/api";
+import WebhooksSection from "@/components/WebhooksSection";
+import ApiKeySection from "@/components/ApiKeySection";
 
 interface Webhook {
   id: number;
@@ -21,14 +23,6 @@ export default async function SettingsPage() {
     ]);
   } catch {}
 
-  const webhookEvents = [
-    { id: "log.error", label: "Error Logs", desc: "When a 4xx/5xx response is logged" },
-    { id: "log.slow", label: "Slow Requests", desc: "When latency exceeds threshold" },
-    { id: "health.degraded", label: "Health Degraded", desc: "When system status changes" },
-    { id: "ingestion.error", label: "Ingestion Errors", desc: "When external logs report errors" },
-    { id: "*", label: "All Events", desc: "Subscribe to everything" },
-  ];
-
   return (
     <>
       {/* Header */}
@@ -47,102 +41,11 @@ export default async function SettingsPage() {
       <div className="grid grid-cols-12 gap-6">
         {/* API Configuration */}
         <div className="col-span-12 md:col-span-8 space-y-6">
-          {/* API Keys */}
-          <div className="bg-surface-container-low rounded-xl p-6">
-            <h3 className="text-lg font-bold font-headline text-on-surface mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary">key</span>
-              API Keys
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-surface-container-high/40 rounded-lg">
-                <div>
-                  <p className="text-sm font-bold text-on-surface">Production Key</p>
-                  <p className="font-mono text-xs text-slate-500 mt-1">fapi_prod_••••••••••••••••</p>
-                </div>
-                <div className="flex gap-2">
-                  <button className="px-3 py-1.5 text-xs font-bold text-slate-400 border border-outline-variant/20 rounded-lg hover:bg-surface-container-highest transition-colors">Reveal</button>
-                  <button className="px-3 py-1.5 text-xs font-bold text-primary border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors">Rotate</button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-4 bg-surface-container-high/40 rounded-lg">
-                <div>
-                  <p className="text-sm font-bold text-on-surface">Development Key</p>
-                  <p className="font-mono text-xs text-slate-500 mt-1">fapi_dev_••••••••••••••••</p>
-                </div>
-                <div className="flex gap-2">
-                  <button className="px-3 py-1.5 text-xs font-bold text-slate-400 border border-outline-variant/20 rounded-lg hover:bg-surface-container-highest transition-colors">Reveal</button>
-                  <button className="px-3 py-1.5 text-xs font-bold text-primary border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors">Rotate</button>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* API Keys — client island */}
+          <ApiKeySection />
 
-          {/* Webhooks */}
-          <div className="bg-surface-container-low rounded-xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold font-headline text-on-surface flex items-center gap-2">
-                <span className="material-symbols-outlined text-tertiary">webhook</span>
-                Webhooks
-              </h3>
-              <button className="px-4 py-2 bg-linear-to-br from-primary to-primary-container text-on-primary rounded-lg font-bold text-xs transition-transform active:scale-95">
-                + Add Webhook
-              </button>
-            </div>
-
-            {webhooks.length === 0 ? (
-              <div className="text-center py-12">
-                <span className="material-symbols-outlined text-4xl text-slate-600 mb-3 block">webhook</span>
-                <p className="text-slate-500 text-sm mb-2">No webhooks configured</p>
-                <p className="text-slate-600 text-xs">Create a webhook to receive notifications for API events.</p>
-                <div className="mt-4 bg-surface-container-high/40 rounded-lg p-4 max-w-md mx-auto text-left">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-2 font-bold">Quick Start</p>
-                  <code className="text-xs font-mono text-primary block">
-                    curl -X POST localhost:4000/api/webhooks \<br/>
-                    &nbsp;&nbsp;-H &quot;Content-Type: application/json&quot; \<br/>
-                    &nbsp;&nbsp;-d &apos;{`{"name":"my-hook","url":"https://..."}`}&apos;
-                  </code>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {webhooks.map((wh) => (
-                  <div key={wh.id} className="flex items-center justify-between p-4 rounded-lg hover:bg-surface-container-highest transition-all border border-outline-variant/5">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-2 h-2 rounded-full ${wh.active ? "bg-tertiary shadow-[0_0_6px_rgba(0,228,117,0.4)]" : "bg-slate-600"}`} />
-                      <div>
-                        <p className="text-sm font-bold text-on-surface">{wh.name}</p>
-                        <p className="font-mono text-xs text-slate-500 truncate max-w-[300px]">{wh.url}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        <p className="text-[10px] text-slate-500">{wh.events?.length || 0} events</p>
-                        {wh.lastTriggered && (
-                          <p className="text-[10px] text-slate-600">Last: {wh.lastStatus === 200 ? "OK" : `${wh.lastStatus}`}</p>
-                        )}
-                      </div>
-                      <button className="p-1.5 text-slate-400 hover:text-primary transition-colors">
-                        <span className="material-symbols-outlined text-sm">edit</span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Available events */}
-            <div className="mt-6 pt-6 border-t border-outline-variant/10">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Available Events</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {webhookEvents.map((evt) => (
-                  <div key={evt.id} className="flex items-center gap-3 p-3 bg-surface-container-high/30 rounded-lg">
-                    <code className="text-[10px] font-mono text-primary">{evt.id}</code>
-                    <span className="text-xs text-slate-400">{evt.desc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          {/* Webhooks — client island */}
+          <WebhooksSection initialWebhooks={webhooks} />
 
           {/* Ingestion Endpoint */}
           <div className="bg-surface-container-low rounded-xl p-6">
@@ -230,10 +133,16 @@ Content-Type: application/json
           <div className="bg-surface-container-low rounded-xl p-6 border border-error/10">
             <h3 className="text-sm font-bold text-error uppercase tracking-widest mb-4">Danger Zone</h3>
             <div className="space-y-3">
-              <button className="w-full py-2.5 rounded-lg border border-error/20 text-error text-xs font-bold hover:bg-error/10 transition-colors">
+              <button
+                onClick={() => confirm("Revoke all API keys? This cannot be undone.") && alert("This is a demo — keys are display-only.")}
+                className="w-full py-2.5 rounded-lg border border-error/20 text-error text-xs font-bold hover:bg-error/10 transition-colors"
+              >
                 Revoke All API Keys
               </button>
-              <button className="w-full py-2.5 rounded-lg border border-error/20 text-error text-xs font-bold hover:bg-error/10 transition-colors">
+              <button
+                onClick={() => confirm("Purge all log data? This cannot be undone.")}
+                className="w-full py-2.5 rounded-lg border border-error/20 text-error text-xs font-bold hover:bg-error/10 transition-colors"
+              >
                 Purge Log Data
               </button>
             </div>

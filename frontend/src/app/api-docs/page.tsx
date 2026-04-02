@@ -1,4 +1,24 @@
 import { api, type Endpoint } from "@/lib/api";
+import CopyButton from "@/components/CopyButton";
+
+const BASE_URL = "https://api.fastify-curator.tech/v1";
+
+const GET_EXAMPLE = `{
+  "status": "success",
+  "data": {
+    "requests": 12405,
+    "latency_ms": 18.2,
+    "uptime": 99.99
+  }
+}`;
+
+const POST_EXAMPLE = `{
+  "service_name": "auth-worker-01",
+  "retry_policy": {
+    "attempts": 3,
+    "backoff": "exponential"
+  }
+}`;
 
 export default async function ApiDocsPage() {
   let endpoints: Endpoint[] = [];
@@ -30,12 +50,13 @@ export default async function ApiDocsPage() {
         <div className="bg-surface-container-low rounded-xl p-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="bg-surface-container-highest px-4 py-2 rounded-lg font-mono text-xs text-slate-400">BASE URL</div>
-            <code className="font-mono text-primary text-lg">https://api.fastify-curator.tech/v1</code>
+            <code className="font-mono text-primary text-lg">{BASE_URL}</code>
           </div>
-          <button className="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors font-mono text-xs font-bold uppercase tracking-widest">
-            <span className="material-symbols-outlined text-sm">content_copy</span>
-            Copy Base URL
-          </button>
+          <CopyButton
+            text={BASE_URL}
+            label="Copy Base URL"
+            className="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors font-mono text-xs font-bold uppercase tracking-widest"
+          />
         </div>
       </section>
 
@@ -80,7 +101,11 @@ export default async function ApiDocsPage() {
           <div className="bg-surface-container-lowest p-6 font-mono text-xs overflow-x-auto">
             <div className="flex justify-between items-center mb-4">
               <span className="text-slate-500">Example Response Body</span>
-              <button className="text-primary hover:underline">Copy JSON</button>
+              <CopyButton
+                text={GET_EXAMPLE}
+                label="Copy JSON"
+                className="text-primary hover:underline flex items-center gap-1"
+              />
             </div>
             <pre className="text-[#c9e7f7]">{`{
   `}<span className="text-tertiary-fixed-dim">{`"status"`}</span>{`: `}<span className="text-secondary-fixed">{`"success"`}</span>{`,
@@ -104,9 +129,9 @@ export default async function ApiDocsPage() {
             <p className="text-sm text-slate-400 leading-relaxed mb-4">
               All requests must include your API Key in the <code className="font-mono text-xs text-on-surface">X-API-Key</code> header.
             </p>
-            <button className="text-xs font-bold text-on-surface bg-surface-container-highest px-4 py-2 rounded-lg hover:bg-surface-bright transition-all">
+            <a href="/settings" className="text-xs font-bold text-on-surface bg-surface-container-highest px-4 py-2 rounded-lg hover:bg-surface-bright transition-all inline-block">
               Manage Keys
-            </button>
+            </a>
           </div>
           <div className="bg-surface-container-low p-6 rounded-xl border border-outline-variant/5">
             <h4 className="text-secondary-fixed font-bold mb-4 flex items-center gap-2">
@@ -116,12 +141,12 @@ export default async function ApiDocsPage() {
             <div className="space-y-4">
               <div className="flex justify-between items-center text-xs">
                 <span className="text-slate-400">Standard Tier</span>
-                <span className="font-mono text-on-surface">5,000 req/hr</span>
+                <span className="font-mono text-on-surface">30 req/min</span>
               </div>
               <div className="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
                 <div className="bg-primary w-2/3 h-full" />
               </div>
-              <p className="text-[10px] text-slate-500 italic text-right">3,340 requests remaining</p>
+              <p className="text-[10px] text-slate-500 italic text-right">Reads: 30/min · Writes: 10/min</p>
             </div>
           </div>
         </div>
@@ -168,7 +193,11 @@ export default async function ApiDocsPage() {
           <div className="bg-surface-container-lowest p-6 font-mono text-xs overflow-x-auto">
             <div className="flex justify-between items-center mb-4">
               <span className="text-slate-500">Example Payload</span>
-              <button className="text-primary hover:underline">Copy JSON</button>
+              <CopyButton
+                text={POST_EXAMPLE}
+                label="Copy JSON"
+                className="text-primary hover:underline flex items-center gap-1"
+              />
             </div>
             <pre className="text-[#c9e7f7]">{`{
   `}<span className="text-tertiary-fixed-dim">{`"service_name"`}</span>{`: `}<span className="text-secondary-fixed">{`"auth-worker-01"`}</span>{`,
