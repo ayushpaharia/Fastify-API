@@ -1,0 +1,37 @@
+[Unit]
+Description=Fastify-API backend
+Documentation=https://github.com/ayushpaharia/Fastify-API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=fastify
+Group=fastify
+WorkingDirectory=/opt/fastify-api/backend
+EnvironmentFile=/opt/fastify-api/backend/.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fastify-api
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ReadWritePaths=/opt/fastify-api
+
+# Resource caps — keeps a runaway from eating the VM
+MemoryMax=512M
+CPUQuota=80%
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

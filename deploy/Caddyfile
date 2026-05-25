@@ -1,0 +1,47 @@
+# /etc/caddy/Caddyfile
+# Auto-HTTPS reverse proxy for fastify-api.ayushpaharia.in -> Fastify on :4000
+
+{
+	email ayush.paharia.18@gmail.com
+}
+
+fastify-api.ayushpaharia.in {
+	encode zstd gzip
+
+	# Send real client IP downstream — Fastify reads X-Forwarded-For (trustProxy: true)
+	reverse_proxy 127.0.0.1:4000 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	header {
+		# Security headers
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options    "nosniff"
+		X-Frame-Options           "DENY"
+		Referrer-Policy           "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	# Defense-in-depth: cap per-IP requests at the edge too.
+	# (Fastify enforces stricter app-level limits; this catches L4-ish floods cheaply.)
+	@flood {
+		not path /api/health
+	}
+	rate_limit @flood {
+		zone perip {
+			key    {remote_host}
+			events 60
+			window 1m
+		}
+	}
+
+	log {
+		output file /var/log/caddy/fastify-api.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+		format json
+	}
+}
