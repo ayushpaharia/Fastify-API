@@ -8,15 +8,11 @@
 fastify-api.ayushpaharia.in {
 	encode zstd gzip
 
-	# Send real client IP downstream — Fastify reads X-Forwarded-For (trustProxy: true)
-	reverse_proxy 127.0.0.1:4000 {
-		header_up X-Real-IP {remote_host}
-		header_up X-Forwarded-For {remote_host}
-		header_up X-Forwarded-Proto {scheme}
-	}
+	# Caddy's reverse_proxy auto-forwards X-Forwarded-For / -Proto.
+	# Fastify trusts them (trustProxy: true) so req.ip is the real client.
+	reverse_proxy 127.0.0.1:4000
 
 	header {
-		# Security headers
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		X-Content-Type-Options    "nosniff"
 		X-Frame-Options           "DENY"
@@ -24,24 +20,12 @@ fastify-api.ayushpaharia.in {
 		-Server
 	}
 
-	# Defense-in-depth: cap per-IP requests at the edge too.
-	# (Fastify enforces stricter app-level limits; this catches L4-ish floods cheaply.)
-	@flood {
-		not path /api/health
-	}
-	rate_limit @flood {
-		zone perip {
-			key    {remote_host}
-			events 60
-			window 1m
-		}
-	}
+	# Note: edge rate-limiting requires the caddy-ratelimit plugin (not in core).
+	# Fastify app-level limits (15/min reads, 5/min writes, 2/min ingest, ban on 3 strikes)
+	# are sufficient defense for a single-VM deploy.
 
+	# Logs go to journald via stdout — view with: journalctl -u caddy -f
 	log {
-		output file /var/log/caddy/fastify-api.log {
-			roll_size 10MiB
-			roll_keep 5
-		}
 		format json
 	}
 }
