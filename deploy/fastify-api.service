@@ -10,6 +10,10 @@ User=fastify
 Group=fastify
 WorkingDirectory=/opt/fastify-api/backend
 EnvironmentFile=/opt/fastify-api/backend/.env
+# Node 22 happy-eyeballs default (250ms) is too aggressive for some egress paths
+# (e.g. Neon HTTP endpoints from GCP asia-south1). Bump the per-attempt timeout
+# and prefer IPv4 — IPv6 from this VM is unreachable.
+Environment=NODE_OPTIONS=--network-family-autoselection-attempt-timeout=5000 --dns-result-order=ipv4first
 ExecStart=/usr/bin/node dist/index.js
 Restart=on-failure
 RestartSec=5s
