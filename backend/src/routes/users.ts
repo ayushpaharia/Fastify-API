@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { db } from "../db.js";
 import { users, sessions } from "../schema.js";
 import { eq, sql, desc } from "drizzle-orm";
+import { RL } from "../lib/routeLimits.js";
 
 const ROLE_RANK: Record<string, number> = {
   admin: 3,
@@ -108,7 +109,7 @@ export async function userRoutes(app: FastifyInstance) {
     };
   });
 
-  app.post("/api/users", async (req, reply) => {
+  app.post("/api/users", { config: RL.write }, async (req, reply) => {
     const body = req.body as {
       name: string;
       email: string;
@@ -127,7 +128,7 @@ export async function userRoutes(app: FastifyInstance) {
     return reply.status(201).send(created);
   });
 
-  app.patch("/api/users/:id", async (req, reply) => {
+  app.patch("/api/users/:id", { config: RL.write }, async (req, reply) => {
     const { id } = req.params as { id: string };
     const userId = parseInt(id);
     const body = req.body as Partial<{
@@ -166,7 +167,7 @@ export async function userRoutes(app: FastifyInstance) {
     return updated;
   });
 
-  app.delete("/api/users/:id", async (req, reply) => {
+  app.delete("/api/users/:id", { config: RL.write }, async (req, reply) => {
     const { id } = req.params as { id: string };
     const userId = parseInt(id);
 

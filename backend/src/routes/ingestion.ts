@@ -3,10 +3,11 @@ import { db } from "../db.js";
 import { ingestionLogs } from "../schema.js";
 import { sql, desc, gte, eq, count } from "drizzle-orm";
 import { fireWebhooks } from "./webhooks.js";
+import { RL } from "../lib/routeLimits.js";
 
 export async function ingestionRoutes(app: FastifyInstance) {
   // Ingest external logs (POST — external systems push here)
-  app.post("/api/ingest", async (req, reply) => {
+  app.post("/api/ingest", { config: RL.strict }, async (req, reply) => {
     const body = req.body as
       | { source: string; level?: string; message: string; metadata?: Record<string, unknown> }
       | Array<{ source: string; level?: string; message: string; metadata?: Record<string, unknown> }>;

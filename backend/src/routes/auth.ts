@@ -3,6 +3,7 @@ import { requireAuth } from "../plugins/auth.js";
 import { db } from "../db.js";
 import { users } from "../schema.js";
 import { eq } from "drizzle-orm";
+import { RL } from "../lib/routeLimits.js";
 
 export async function authRoutes(app: FastifyInstance) {
   // Get current user profile (requires auth)
@@ -19,7 +20,7 @@ export async function authRoutes(app: FastifyInstance) {
   });
 
   // Sync Clerk user to local DB (called after sign-up/sign-in)
-  app.post("/api/auth/sync", { preHandler: requireAuth }, async (req) => {
+  app.post("/api/auth/sync", { preHandler: requireAuth, config: RL.write }, async (req) => {
     const { name, email, avatarUrl } = req.body as {
       name: string;
       email: string;

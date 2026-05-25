@@ -3,6 +3,7 @@ import { db } from "../db.js";
 import { webhooks } from "../schema.js";
 import { eq } from "drizzle-orm";
 import crypto from "crypto";
+import { RL } from "../lib/routeLimits.js";
 
 export async function webhookRoutes(app: FastifyInstance) {
   // List all webhooks
@@ -11,7 +12,7 @@ export async function webhookRoutes(app: FastifyInstance) {
   });
 
   // Create webhook
-  app.post("/api/webhooks", async (req, reply) => {
+  app.post("/api/webhooks", { config: RL.write }, async (req, reply) => {
     const body = req.body as {
       name: string;
       url: string;
@@ -32,7 +33,7 @@ export async function webhookRoutes(app: FastifyInstance) {
   });
 
   // Update webhook
-  app.patch("/api/webhooks/:id", async (req, reply) => {
+  app.patch("/api/webhooks/:id", { config: RL.write }, async (req, reply) => {
     const { id } = req.params as { id: string };
     const body = req.body as Partial<{
       name: string;
@@ -50,7 +51,7 @@ export async function webhookRoutes(app: FastifyInstance) {
   });
 
   // Delete webhook
-  app.delete("/api/webhooks/:id", async (req, reply) => {
+  app.delete("/api/webhooks/:id", { config: RL.write }, async (req, reply) => {
     const { id } = req.params as { id: string };
     const [deleted] = await db
       .delete(webhooks)
@@ -60,8 +61,8 @@ export async function webhookRoutes(app: FastifyInstance) {
     return { deleted: true, id: deleted.id };
   });
 
-  // Test webhook (sends a test payload)
-  app.post("/api/webhooks/:id/test", async (req, reply) => {
+  // Test webhook (sends a test payload) — strict (fires outbound HTTP)
+  app.post("/api/webhooks/:id/test", { config: RL.strict }, async (req, reply) => {
     const { id } = req.params as { id: string };
     const [webhook] = await db.select().from(webhooks).where(eq(webhooks.id, parseInt(id)));
     if (!webhook) return reply.status(404).send({ error: "Webhook not found" });

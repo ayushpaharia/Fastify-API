@@ -2,9 +2,10 @@ import type { FastifyInstance } from "fastify";
 import { db } from "../db.js";
 import { logs, endpoints, users } from "../schema.js";
 import { sql, count, gte, and } from "drizzle-orm";
+import { RL } from "../lib/routeLimits.js";
 
 export async function healthRoutes(app: FastifyInstance) {
-  app.get("/api/health", async () => {
+  app.get("/api/health", { config: RL.none }, async () => {
     const now = new Date();
     const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000);
 

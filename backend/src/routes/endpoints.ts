@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { db } from "../db.js";
 import { endpoints, logs } from "../schema.js";
 import { sql, avg, count, gte, eq } from "drizzle-orm";
+import { RL } from "../lib/routeLimits.js";
 
 export async function endpointRoutes(app: FastifyInstance) {
   app.get("/api/endpoints", async () => {
@@ -35,7 +36,7 @@ export async function endpointRoutes(app: FastifyInstance) {
     });
   });
 
-  app.post("/api/endpoints", async (req, reply) => {
+  app.post("/api/endpoints", { config: RL.write }, async (req, reply) => {
     const body = req.body as {
       method: string;
       path: string;
