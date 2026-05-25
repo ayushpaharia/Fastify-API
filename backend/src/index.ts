@@ -14,7 +14,13 @@ import { eventRoutes } from "./routes/events.js";
 import { webhookRoutes } from "./routes/webhooks.js";
 import { ingestionRoutes } from "./routes/ingestion.js";
 
-const app = Fastify({ logger: true });
+const app = Fastify({
+  logger: true,
+  // Caddy/CDN sits in front — read X-Forwarded-For for req.ip
+  trustProxy: true,
+  // Hard cap on incoming bodies (default is 1MB). Protects against memory abuse.
+  bodyLimit: 256 * 1024, // 256 KB
+});
 
 async function start() {
   // Plugins (order matters: CORS first, then auth, then rate limit)
